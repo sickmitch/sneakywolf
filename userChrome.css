@@ -1,6 +1,8 @@
 /*! SHIMMMER v2.33 */
 /*? https://github.com/nuclearcodecat/shimmer */
 
+/* widget.gtk.ignore-bogus-leave-notify     1   fix dragging of tabs */
+
 
 #urlbar-container {
     -moz-window-dragging: drag; /* CUSTOM EDIT - allow dragging from address bar when fullscreen on monitors without GNOME panel */
@@ -20,17 +22,49 @@
 	}
 }
 
-/* hovering toolbar button */
-#back-button > image:nth-child(2),
-#forward-button > image:nth-child(2),
-#reload-button > image:nth-child(1),
-#PanelUI-menu-button > stack:nth-child(1),
-#unified-extensions-button > image:nth-child(1),
-#downloads-button > stack:nth-child(1) {
-	border-radius: 8px !important;
+/* urlbar */
+.urlbar:is([focused], [open]) > .urlbar-background{
+	outline-color: transparent !important;
 }
-#_446900e4-71c2-419f-a6a7-df9c091e268b_-BAP,
-toolbarbutton.bookmark-item {
+.urlbar:is([focused], [open]) > .urlbar-input-container{
+	border: 2px solid transparent !important;
+	background: linear-gradient(90deg, var(--light-purple) 0%, var(--light-blue) 100%) border-box !important;
+	border-radius: var(--shimmer-urlbar-rounding) !important;
+}
+
+#urlbar[breakout-extend] .urlbar-background{
+	border-radius: inherit;
+}
+
+/* Smooth rounded tooltips */
+tooltip {
+	background-color: black !important;
+	border: 2px solid var(--light-blue) !important;
+	border-radius: 17px !important;
+	margin-inline: 8px !important;
+}
+
+/* Prefs styling */
+#PlacesToolbarItems > toolbarbutton > label{
+	display: none !important;
+}
+toolbarbutton.bookmark-item > image {
+	margin-inline: 4px !important;
+}
+#PlacesToolbarItems {
+	margin: 7px !important;
+	background: linear-gradient(90deg, var(--light-purple) 0%, var(--light-blue) 100%) !important;
+	border-radius: 8px !important;
+	max-height: 36px !important;
+	flex: 0 !important; 
+	width: auto !important;
+	max-width: max-content !important;
+}
+
+/* Hovering toolbar buttons and icons prefs */
+toolbarbutton.bookmark-item:hover {
+	background: #212638 !important;
+	border: none !important;
 	border-radius: 8px !important;
 }
 #back-button:hover image:nth-child(2),
@@ -38,25 +72,24 @@ toolbarbutton.bookmark-item {
 #reload-button:hover image:nth-child(1),
 #PanelUI-menu-button:hover stack:nth-child(1),
 #unified-extensions-button:hover image:nth-child(1),
-#downloads-button:hover stack:nth-child(1) {
-	background: var(--light-blue) !important;
-	fill: #000 !important;
-	border: none !important;
-	border-radius: 8px !important;
-}
+#downloads-button:hover stack:nth-child(1),
 #_446900e4-71c2-419f-a6a7-df9c091e268b_-BAP:hover,
-toolbarbutton.bookmark-item:hover {
-	background: var(--light-blue) !important;
-	color: #000 !important;
+#fxa-toolbar-menu-button:hover stack:nth-child(1){
+	background: linear-gradient(135deg, var(--light-blue) 0%, var(--light-purple) 100%) !important;
 	border: none !important;
 	border-radius: 8px !important;
 }
-
-toolbarbutton.bookmark-item {
-	max-height: 32px;
-    margin-top: 9px !important;
+#back-button > image:nth-child(2),
+#forward-button > image:nth-child(2),
+#reload-button > image:nth-child(1),
+#PanelUI-menu-button > stack:nth-child(1),
+#unified-extensions-button > image:nth-child(1),
+#downloads-button > stack:nth-child(1),
+#_446900e4-71c2-419f-a6a7-df9c091e268b_-BAP,
+toolbarbutton.bookmark-item,
+#fxa-toolbar-menu-button > stack:nth-child(1){
+	border-radius: 8px !important;
 }
-
 /* transition */
 menuitem, toolbarbutton > stack, toolbaritem, toolbarbutton, toolbarbutton > image, .urlbarView-row, menu,
 menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:hover, toolbarbutton:hover > image, .urlbarView-row:hover, menu:hover,
@@ -101,7 +134,8 @@ menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:ho
 
 	--shimmer-sidebar-splitter-width: var(--shimmer-top-bottom-browser-margin);
 	
-	--light-blue: #33ccff !important;
+	--light-blue:#65b4e658 !important;
+	--light-purple:#dd65e368 !important;
 }
 
 /*? overwritten variables */
@@ -159,12 +193,6 @@ menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:ho
 /*? slim scrollbars everywhear!!!! */
 * {
 	scrollbar-width: thin !important;
-}
-
-@media -moz-pref("shimmer.hide-sidebar-button") {
-	#sidebar-button {
-		display: none !important;
-	}
 }
 
 /*! === titlebar === */
@@ -389,7 +417,7 @@ menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:ho
 
 /*? taller urlbar for bigger text when extended */
 #urlbar[breakout-extend] .urlbar-input-container {
-	height: 48px !important;
+	height: 60px !important;
 }
 
 @media (max-width: 600px) {
@@ -885,9 +913,9 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 	:root:not([chromehidden*="menubar toolbar directories extrachrome"]):not([inDOMFullscreen]) #sidebar-box:not([hidden]) ~ #tabbrowser-tabbox {
 		border-radius: var(--shimmer-browser-border-radius) 0 0 var(--shimmer-browser-border-radius) !important;
 		overflow: hidden !important;
-		border-top: 1px solid var(--light-blue) !important;
-		border-bottom: 1px solid var(--light-blue) !important;
-		border-left: 1px solid var(--light-blue) !important;
+		border-top: 2px solid var(--light-purple) !important;
+		border-bottom: 2px solid var(--light-purple) !important;
+		border-left: 2px solid var(--light-blue) !important;
 	}
 }
 @media -moz-pref("shimmer.native-vertical-tabs") {
@@ -1096,3 +1124,4 @@ menu, menuitem {
 /*TODO some of the usual buttons that appear on the right-click context menu are hidden. right now you can change them at the top of `userChrome.css`. i will maybe later introduce `about:config` variables for easier customization */
 /*TODO autoscroller styles */
 /*TODO pointer events on urlbar*/
+m
