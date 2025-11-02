@@ -1,7 +1,7 @@
 /*! SHIMMMER v2.33 */
 /*? https://github.com/nuclearcodecat/shimmer */
 
-/* widget.gtk.ignore-bogus-leave-notify     1   fix dragging of tabs */
+/*in about:config { widget.gtk.ignore-bogus-leave-notify     1 }   fix dragging of tabs */
 
 
 #urlbar-container {
@@ -98,16 +98,109 @@ menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:ho
 	transition: background 0.5s linear, opacity 0.5s linear !important;
 }
 
-/* hide tabs toolbar */
-#TabsToolbar {
+/* hide tabs toolbar when sidebar is visible (no hidden attribute) */
+:root:has(#sidebar-box:not([hidden])) #TabsToolbar {
 	display: none !important;
 }
 
-/*? shimmer variables */
+/* horizontal tabsbar */
+#tabbrowser-arrowscrollbox > tab > stack > hbox > image{
+	display: none !important;
+}
+#tabbrowser-arrowscrollbox > tab > stack > hbox > vbox > label{
+	display: none !important;
+}
+
+/* clamping tabs closer together */
+#tabbrowser-arrowscrollbox > tab{
+	display: inline-grid !important;
+	flex-grow: 0 !important;
+	flex-shrink: 0 !important;
+	flex-basis: 0 !important;
+	min-width: 40px !important;
+}
+
+/* consistent aesthetic for tabs */
+.tab-content {
+	padding-inline: 10px !important;
+}
+.tab-icon-image {
+	margin-inline-end: 0px !important;
+}
+.tab-background {
+	border-radius: 36px !important;
+}
+.tab-background {
+	.tabbrowser-tab[pinned="true"]>.tab-stack>&:not([selected], [multiselected]) {
+		background-color: var(--light-blue) !important;
+		border: solid 2px var(--light-purple) !important;
+	}
+}
+#pinned-tabs-container,
+#tabbrowser-arrowscrollbox {
+	margin-inline-start: 5px !important;
+}
+#pinned-tabs-container,
+#tabbrowser-arrowscrollbox {
+	transform: translateY(4px) !important;
+}
+#urlbar-container {
+	margin-left: 10px !important;
+	min-width: 0px !important;
+}
+
+/* hide unnecessary buttons */
+#stop-button,
+#PlacesChevron,
+hbox.titlebar-spacer:nth-child(3),
+hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:nth-child(4),
+#alltabs-button,
+#forward-button,
+#back-button,
+#tracking-protection-icon-container,
+#identity-box> :not(#notification-popup-box),
+#reload-button {
+	display: none !important;
+}
+
+/* ONELINER TRICKERY */
+:root {
+	--navbarWidth: 49vw;
+}
+#TabsToolbar {
+	margin-left: var(--navbarWidth) !important;
+}
+#nav-bar {
+	margin-right: calc(100vw - var(--navbarWidth)) !important;
+	transition: all 0.18s ease !important;
+	will-change: transform, height, margin-top !important;
+	backface-visibility: hidden !important;
+	transform: translateZ(0) !important;
+}
+#sidebar-box[hidden] {
+	animation: force-repaint 0.02s linear;
+}
+@keyframes force-repaint {
+	from {
+		opacity: 0.999;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+:root:has(#sidebar-box[hidden]) #nav-bar,
+#main-window.sidebar-hidden #nav-bar {
+	margin-top: -44px !important;
+	height: 44px !important;
+}
+
+
+/* shimmer variables */
 :root {
 	--toolbarbutton-icon-fill-attention: #e500fa !important;
 	/*? COLLAPSING SIDEBAR SETTINGS */
-	--shimmer-cbar-collapsed-width: 42px;
+	--shimmer-cbar-collapsed-width: 45px;
 	--shimmer-cbar-expanded-width: 300px;
 
 	/*? urlbar border radius */
@@ -743,32 +836,28 @@ findbar:not([hidden]) {
 }
 
 /*? tab on titlebar that's not pinned */
-#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab[fadein]:not([pinned]) {
-	/*? min tab width */
+/* #tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab[fadein]:not([pinned]) {
 	min-width: var(--shimmer-tab-min-width) !important;
-	/*? max tab width */
 	max-width: var(--shimmer-tab-max-width) !important;
-}
+} */
 
 /*? tab groups fix :3 */
-#tabbrowser-tabs[orient="horizontal"] tab-group[collapsed] .tabbrowser-tab[fadein]:not([pinned]) {
-	/*? min tab width */
+/* #tabbrowser-tabs[orient="horizontal"] tab-group[collapsed] .tabbrowser-tab[fadein]:not([pinned]) {
 	min-width: 0 !important;
-	/*? max tab width */
 	max-width: 0 !important;
-}
+} */
 
 /*? make tab background round and small */
-.tab-background {
+/* .tab-background {
 	min-height: 0 !important;
 	border: solid 1px color-mix(in srgb, var(--tab-selected-bgcolor) 90%, #000);
 	box-shadow: 0 0 0 #fff !important;
-}
+} */
 
 /*? show tab close buttons when hovering tab */
-#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab:not([pinned]):hover .tab-close-button {
+/* #tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab:not([pinned]):hover .tab-close-button {
 	display: block !important;
-}
+} */
 
 /*? hide shadow on tabbrowser (overflow already indicated by arrow clickable) */
 spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
@@ -776,9 +865,9 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 }
 
 /*? change tab background color */
-.tab-background {
+/* .tab-background {
 	background: color-mix(in srgb, var(--tab-selected-bgcolor) 20%, rgba(0, 0, 0, 0));
-} 
+}  */
 
 /*? hide firefox view separator */
 #tabbrowser-tabs {
@@ -786,9 +875,9 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 }
 
 /*? tab height and x button pos */
-#tabbrowser-tabs[orient="vertical"] .tab-background {min-height: 28px !important;}
+/* #tabbrowser-tabs[orient="vertical"] .tab-background {min-height: 28px !important;} */
 
-@media not -moz-pref("shimmer.taller-tabs") {
+/* @media not -moz-pref("shimmer.taller-tabs") {
 	#tabbrowser-tabs[orient="horizontal"], .tabbrowser-tab {
 		min-height: 38px !important;
 		height: 38px !important;
@@ -821,7 +910,7 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 	.tab-background {
 		border-radius: calc(var(--shimmer-tab-border-radius) * 1.2) !important;
 	}
-}
+} */
 
 /*? make inner tab html occupy whole height (for some reason wouldn't happen to pinned tab) */
 .tab-stack {
@@ -835,16 +924,16 @@ spacer[part="overflow-end-indicator"], spacer[part="overflow-start-indicator"] {
 } */
 
 /*? rounded tab close button */
-.tab-close-button {
+/* .tab-close-button {
 	border-radius: calc(var(--shimmer-tab-border-radius) * 0.6) !important;
-}
+} */
 
 /*? minimal selected tab width */
-@media not -moz-pref("shimmer.dont-expand-selected-tab") {
+/* @media not -moz-pref("shimmer.dont-expand-selected-tab") {
 	#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab:not([pinned])[selected] {
 		min-width: var(--shimmer-tab-selected-width) !important;
 	}
-}
+} */
 
 /*? fix for moving tabs looking weird */
 #tabbrowser-tabs {
@@ -1124,4 +1213,3 @@ menu, menuitem {
 /*TODO some of the usual buttons that appear on the right-click context menu are hidden. right now you can change them at the top of `userChrome.css`. i will maybe later introduce `about:config` variables for easier customization */
 /*TODO autoscroller styles */
 /*TODO pointer events on urlbar*/
-m
