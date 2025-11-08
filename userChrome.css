@@ -22,7 +22,7 @@
 	}
 }
 
-/* urlbar */
+/* urlbar breakout */ 
 .urlbar:is([focused], [open]) > .urlbar-background{
 	outline-color: transparent !important;
 }
@@ -30,10 +30,13 @@
 	border: 2px solid transparent !important;
 	background: linear-gradient(90deg, var(--light-purple) 0%, var(--light-blue) 100%) border-box !important;
 	border-radius: var(--shimmer-urlbar-rounding) !important;
+	overflow: hidden !important;
 }
-
 #urlbar[breakout-extend] .urlbar-background{
 	border-radius: inherit;
+}
+.urlbarView[noresults="true"] {
+	display: none !important;
 }
 
 /* Smooth rounded tooltips */
@@ -103,53 +106,14 @@ menuitem:hover, toolbarbutton:hover > stack, toolbaritem:hover, toolbarbutton:ho
 	display: none !important;
 }
 
-/* horizontal tabsbar */
-#tabbrowser-arrowscrollbox > tab > stack > hbox > image{
-	display: none !important;
-}
-#tabbrowser-arrowscrollbox > tab > stack > hbox > vbox > label{
-	display: none !important;
-}
-
-/* clamping tabs closer together */
-#tabbrowser-arrowscrollbox > tab{
-	display: inline-grid !important;
-	flex-grow: 0 !important;
-	flex-shrink: 0 !important;
-	flex-basis: 0 !important;
-	min-width: 40px !important;
-}
-
-/* consistent aesthetic for tabs */
-.tab-content {
-	padding-inline: 10px !important;
-}
-.tab-icon-image {
-	margin-inline-end: 0px !important;
-}
-.tab-background {
-	border-radius: 36px !important;
-}
-.tab-background {
-	.tabbrowser-tab[pinned="true"]>.tab-stack>&:not([selected], [multiselected]) {
-		background-color: var(--light-blue) !important;
-		border: solid 2px var(--light-purple) !important;
-	}
-}
-#pinned-tabs-container,
-#tabbrowser-arrowscrollbox {
-	margin-inline-start: 5px !important;
-}
-#pinned-tabs-container,
-#tabbrowser-arrowscrollbox {
-	transform: translateY(4px) !important;
-}
 #urlbar-container {
 	margin-left: 10px !important;
 	min-width: 0px !important;
 }
 
 /* hide unnecessary buttons */
+#tabbrowser-arrowscrollbox > tab > stack > hbox > vbox > label,
+#tabbrowser-arrowscrollbox > tab > stack > hbox > image,
 #stop-button,
 #PlacesChevron,
 hbox.titlebar-spacer:nth-child(3),
@@ -159,6 +123,7 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 #back-button,
 #tracking-protection-icon-container,
 #identity-box> :not(#notification-popup-box),
+#tabs-newtab-button,
 #reload-button {
 	display: none !important;
 }
@@ -195,6 +160,103 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 	height: 44px !important;
 }
 
+:root:has(#sidebar-box[hidden]) #browser {
+	border-top: 2px solid;
+	border-image: linear-gradient(to right, var(--light-purple), var(--light-blue), var(--light-purple)) 1;
+}
+
+/* tab groups */ 
+.tab-group-label {
+	tab-group[collapsed] > .tab-group-label-container & {
+		background-color: var(--light-blue) !important;
+		border: solid 2px var(--light-purple) !important;
+		outline: none !important;
+	}
+}
+.tab-group-label {
+	tab-group[collapsed] > .tab-group-label-container &:hover {
+		background-image: linear-gradient(90deg, var(--light-purple) 0%, var(--light-blue) 100%) !important;
+	}
+}
+.tab-group-label {
+	min-height: 36px !important;
+	border-radius: 36px !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-inline: 10px !important;
+}
+.tab-group-label-hover-highlight {
+	tab-group[collapsed]:not([movingtabgroup]) &:hover,
+	tab-group[previewpanelactive] & {
+		background-color: transparent !important;
+		border: none !important;
+		outline: none !important;
+		box-shadow: none !important;
+	}
+}
+tab-group {
+	--tab-group-color-pale: var(--tab-group-color-invert) !important;
+}
+
+
+/* horiz bar tabs styling */
+.tab-label-container {
+	display: none !important;
+}
+/* clamping cleaned tabs closer together and styling*/
+tab-group > tab.tabbrowser-tab {
+	display: none;
+}
+tab-group:not([collapsed]) > tab.tabbrowser-tab,
+tab-group[collapsed] tab.tabbrowser-tab[selected],
+#tabbrowser-arrowscrollbox > tab{
+	display: inline-grid !important;
+	flex-grow: 0 !important;
+	flex-shrink: 0 !important;
+	flex-basis: 0 !important;
+	min-width: 40px !important;
+}
+.tab-close-button {
+	display: none;
+}
+.tab-group-overflow-count-container {
+	display: none !important;
+}
+.tab-content {
+	padding-inline: 10px !important;
+}
+.tab-icon-image {
+	margin-inline-end: 0px !important;
+}
+.tab-background {
+	border-radius: 36px !important;
+}
+/* normal pinned tabs */
+.tab-background {
+	.tabbrowser-tab[pinned="true"]>.tab-stack>&:not([selected], [multiselected]) {
+		border: solid 2px var(--light-purple) !important;
+	}
+}
+/* normal TABS */
+.tab-background {
+	.tabbrowser-tab>.tab-stack>&:not([selected], [multiselected]) {
+		border: solid 2px var(--light-blue) !important;
+	}
+}
+.tab-background {
+	.tabbrowser-tab:not([selected], [multiselected]):hover > .tab-stack > & {
+		background: linear-gradient(135deg, var(--light-purple) 0%, var(--light-blue) 100%) !important;
+	}
+}
+#pinned-tabs-container,
+#tabbrowser-arrowscrollbox {
+	margin-inline-start: 5px !important;
+}
+#pinned-tabs-container,
+#tabbrowser-arrowscrollbox {
+	transform: translateY(4px) !important;
+}
 
 /* shimmer variables */
 :root {
@@ -415,8 +477,6 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 /*! === navbar === */
 
 /*? Additional URL bar container styling - more aggressive approach */
-.urlbar-input-box,
-.urlbar-input-box > *,
 .urlbar-background,
 .urlbar-textbox-container {
 	border-radius: var(--shimmer-urlbar-rounding) !important;
@@ -447,6 +507,15 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 /*? needed for popup transition to work */
 #urlbar {
 	margin-top: 0 !important;
+}
+
+/* search engine selector */
+.searchmode-switcher-chicklet {
+	border-radius: var(--shimmer-urlbar-rounding) !important;
+	margin-inline-start: 8px !important;
+}
+.searchmode-switcher-title {
+	margin-inline-start: 8px !important;
 }
 
 /*? make the background of extended urlbar move down and BROKEN drop a blur behind */
@@ -492,15 +561,15 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 
 /*? urlbox backdrop */
 #urlbar[breakout-extend]::before{
-	content: '' !important;
+	/* content: '' !important;
 	width: 200vw !important;
-	height: 200vh !important;
+	height: 200vh !important; */
 	position: fixed !important;
 	pointer-events: none !important;
 	overflow: hidden !important;
-	top: -30vh !important;
-	left: -30vw !important;
-	background: color-mix(in srgb, var(--toolbar-field-focus-background-color) 65%, rgba(0, 0, 0, 0)) !important;
+	/* top: -30vh !important; */
+	/* left: -30vw !important; */
+	/* background: color-mix(in srgb, var(--toolbar-field-focus-background-color) 65%, rgba(0, 0, 0, 0)) !important; */
 }
 
 /*? urlbar bigger text */
@@ -510,7 +579,7 @@ hbox.titlebar-buttonbox-container:nth-child(6)>hbox:nth-child(1)>toolbarbutton:n
 
 /*? taller urlbar for bigger text when extended */
 #urlbar[breakout-extend] .urlbar-input-container {
-	height: 60px !important;
+	height: 50px !important;
 }
 
 @media (max-width: 600px) {
