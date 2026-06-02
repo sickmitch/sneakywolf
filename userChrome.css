@@ -4,6 +4,30 @@
 /*in about:config { widget.gtk.ignore-bogus-leave-notify     1 }   fix dragging of tabs */
 
 
+/* Toolbar / tabbar background only */
+#navigator-toolbox {
+  background-color: rgba(20, 20, 30, 0.3) !important;
+}
+
+/* Tabs strip */
+#TabsToolbar {
+  background-color: transparent !important;
+}
+
+/* Navigation bar */
+#nav-bar {
+  background-color: rgba(20, 20, 30, 0.5) !important;
+  backdrop-filter: blur(10px);
+}
+
+.tab-background {
+  #tabbrowser-tabs[orient="horizontal"] & {
+    background: #3a0645;
+  }
+  &:is([selected], [multiselected]) {
+    background: #166a66 !important;
+  }
+}
 
 
 :root:not([privatebrowsingmode]) :is(toolbarbutton, toolbarpaletteitem), :root[privatebrowsingmode] :is(toolbarbutton:not(#firefox-view-button), toolbarpaletteitem:not(#wrapper-firefox-view-button)) {
@@ -565,6 +589,11 @@ tab-group>tab>stack:nth-child(1)>hbox:nth-child(2)>moz-button:nth-child(2),
 
 #urlbar {
     margin-right: 15px !important;
+}
+
+.urlbar-background {
+  background-color: rgb(38, 38, 67) !important;
+  border-color:#3a0645 !important;
 }
 
 /*? rounded urlbar and box */
